@@ -7,7 +7,7 @@ const keys = require('./config/keys.js');
 const app = express();
 const PORT = 5000;
 
-mongoose.connect(keys.mongoURI);
+mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 require('./models/User.js');
 require('./services/passport.js');
 
