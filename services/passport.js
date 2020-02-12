@@ -1,5 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const keys = require('../config/keys');
 const mongoose = require('mongoose');
 
@@ -16,6 +17,24 @@ passport.deserializeUser((id, done) => { // id is the token
         });
 });
 
+passport.use(
+    new FacebookStrategy({
+        clientID: keys.facebookAppID,
+        clientSecret: keys.facebookAppSecret,
+        callbackURL: "/auth/facebook/callback/"
+    },
+    async (accessToken, refreshToken, profile, done) => {
+        const existingUser = await User.findOne({ facebookId: profile.id });
+
+        if (existingUser) {
+            return done(null, existingUser);
+        }
+
+        const user = await new User({ facebookId: profile.id }).save();
+        done(null, user);
+    }
+));
+
 // Use the GoogleStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken, refreshToken, and Google
@@ -24,7 +43,7 @@ passport.use(
     new GoogleStrategy({
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
-        callbackURL: "/auth/google/callback"
+        callbackURL: "/auth/google/callback/"
         },
         async (accessToken, refreshToken, profile, done) => {
             const existingUser = await User.findOne({ googleId: profile.id });
