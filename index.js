@@ -9,6 +9,8 @@ const PORT = 5000;
 
 mongoose.connect(keys.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true });
 require('./models/User.js');
+require('./models/Project.js');
+require('./models/Image.js');
 require('./services/passport.js');
 
 app.use(
@@ -22,17 +24,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./routes/authRoutes.js')(app);
+require('./routes/projectRoutes.js')(app);
 
 app.get('/', (req, res) => {
     res.send("Algorithm App");
-});
-
-app.get('/success', (req, res) => {
-    res.send("success!");
-});
-
-app.get('/failure', (req, res) => {
-    res.send("failed!");
 });
 
 app.listen(PORT, () => {
