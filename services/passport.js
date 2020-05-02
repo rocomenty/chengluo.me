@@ -51,7 +51,6 @@ passport.use(
         profileFields: ['id', 'name', 'email', 'photos']
     },
     async (accessToken, refreshToken, profile, done) => {
-        console.log(profile);
         for (var index = 0; index < profile.emails.length; index++) {
             const existingUser = await User.findOne({ email: profile.emails[index].value });
 

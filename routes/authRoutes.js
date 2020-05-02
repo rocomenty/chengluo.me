@@ -8,7 +8,7 @@ module.exports = (app) => {
     );
 
     app.get('/auth/google/callback',
-        passport.authenticate('google', { successRedirect: '/success', failureRedirect: '/failure' })
+        passport.authenticate('google', { successRedirect: '/', failureRedirect: '/' })
     );
 
     app.get('/auth/facebook',
@@ -16,11 +16,10 @@ module.exports = (app) => {
     );
 
     app.get('/auth/facebook/callback',
-        passport.authenticate('facebook', { successRedirect: '/success', failureRedirect: '/failure' })
+        passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/' })
     );
 
     app.get('/api/logout', (req, res) => {
-        console.log(req);
         req.logout();
         res.redirect('/');
     });
