@@ -1,2 +1,2 @@
 # chengluo.me
-This is the repository used to practice algorithmic trading implementation. 
+This is the repository for my personal website [chengluo.me](chengluo.me). 
