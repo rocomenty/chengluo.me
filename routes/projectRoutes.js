@@ -3,14 +3,17 @@ const Project = mongoose.model('projects');
 const Image = mongoose.model('images');
 const fs = require('fs');
 
+const requireLogin = require('../middlewares/requireLogin');
+
 module.exports = (app) => {
     app.get('/api/projects', async (req, res) => {
-        const projects = await Project.find(req.body.constraints);
-        console.log(projects);
+        // console.log("user is: ", req.user.id);
+        const projects = await Project.find({ author: req.user.id });
+        // console.log(projects);
         res.send(projects);
     });
 
-    app.post('/api/projects', async (req, res) => {
+    app.post('/api/projects', requireLogin, async (req, res) => {
         const path = "/Users/chengluo/Desktop/Life\ Code.png";
         const data = fs.readFileSync(path);
 
@@ -23,10 +26,9 @@ module.exports = (app) => {
                 res.status(500);
                 res.send("Could NOT save image file to database. ");
             } else {
-                console.log(img);
                 const project = await new Project({
                     title: req.body.title,
-                    // author: req.user.id,
+                    author: req.user.id,
                     pubTime: Date.now(),
                     body: req.body.content,
                     imageId: img.id

@@ -5,6 +5,8 @@ import * as actions from '../actions';
 
 import Header from './Header';
 import Landing from './Landing';
+import ProjectList from './project/ProjectList';
+import ProjectNew from './project/ProjectNew';
 // import ProjectNew from './surveys/SurveyNew';
 
 class App extends Component {
@@ -19,6 +21,8 @@ class App extends Component {
                     <div>
                         <Header />
                         <Route exact path="/" component={Landing} />
+                        <Route exact path="/projects" component={ProjectList} />
+                        <Route exact path="/project/new" component={ProjectNew} />
                     </div>
                 </div>
             </BrowserRouter>

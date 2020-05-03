@@ -35,11 +35,14 @@ const createUserModel = (profile, idType) => {
 
 // Serialize User into Cookie Session
 passport.serializeUser((user, done) => {
-    done(null, user); // .id refers to the automatically generated id by mongoDB
+    done(null, user.id); // .id refers to the automatically generated id by mongoDB
 });
 
-passport.deserializeUser((user, done) => { // id is the token
-    done(null, user);
+passport.deserializeUser((id, done) => { // id is the token
+    User.findById(id)
+        .then(user => {
+            done(null, user);
+        });
 });
 
 // Facebook Strategy
